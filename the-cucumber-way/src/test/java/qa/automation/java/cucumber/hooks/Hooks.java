@@ -29,14 +29,4 @@ public class Hooks {
     public static WebDriver getDriver() {
         return driver;
     }
-
-//    @Before
-//    public void setUp() {
-//        System.out.println("Setting up preconditions before scenario execution.");
-//    }
-//
-//    @After
-//    public void tearDown() {
-//        System.out.println("Cleaning up after scenario execution.");
-//    }
 }

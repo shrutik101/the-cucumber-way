@@ -2,18 +2,23 @@ package qa.automation.java.cucumber.stepDefinitions;
 
 import io.cucumber.java.en.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 import qa.automation.java.cucumber.hooks.Hooks;
-import qa.automation.java.cucumber.pages.AddRemoveElements;
-import qa.automation.java.cucumber.pages.Checkbox;
-import qa.automation.java.cucumber.pages.LoginPage;
+import qa.automation.java.cucumber.pages.*;
+
+import java.util.List;
 
 public class LoginUISteps {
     WebDriver driver = Hooks.getDriver();
     LoginPage loginPage = new LoginPage(driver);
     Checkbox checkboxPage = new Checkbox(driver);
     AddRemoveElements addRemoveElements = new AddRemoveElements(driver);
+    Dropdown dropdown = new Dropdown(driver);
+
+    EntryAdd entryAdd = new EntryAdd(driver);
 
     @Given("I open the HerokuApp login page")
     public void i_open_the_herokuapp_login_page() {
@@ -88,5 +93,104 @@ public class LoginUISteps {
     @Then("2 delete buttons should be displayed")
     public void two_delete_buttons_should_be_displayed(){
         Assert.assertEquals(2,addRemoveElements.deleteButtonCount());
+    }
+
+    @Given("I open the HerokuApp dropdown page")
+    public void i_open_the_herokuApp_dropdown_page(){
+        driver.get("https://the-internet.herokuapp.com/dropdown");
+    }
+
+    @When("I select {string}")
+    public void i_select_option(String option){
+        if(option.equalsIgnoreCase("Option1")){
+            dropdown.selectOption1();
+        } else{
+            dropdown.selectOption2();
+        }
+    }
+    @Then ("{string} is selected")
+    public void option_should_be_selected(String option){
+        if (option.equalsIgnoreCase("Option1")){
+            Assert.assertTrue(dropdown.isOption1Selected());
+        }else{
+            Assert.assertTrue(dropdown.isOption2Selected());
+        }
+    }
+
+    @Given ("I open HerokuApp entry-add page")
+    public void i_open_herokuApp_entryAdd_page(){
+        driver.get("https://the-internet.herokuapp.com/entry_ad");
+    }
+    @When ("I click on close")
+    public void i_click_on_close(){
+        entryAdd.closePopup();
+    }
+
+    @Then ("The popup is not visible")
+    public void the_popup_is_not_visible(){
+        Assert.assertTrue(entryAdd.isModalWindowIsClosed());
+    }
+
+    @Given ("I open Herokuapp todos page")
+    public void i_open_herokuapp_todos_page(){
+        // Open the webpage
+        driver.get("https://todomvc4tasj.herokuapp.com/");
+    }
+
+    @When ("I add {string}")
+    public void i_add_task(String task) throws InterruptedException {
+        // add the task
+        WebElement textBox = driver.findElement(By.id("new-todo"));
+        textBox.sendKeys(task);
+        Thread.sleep(2000);
+        textBox.sendKeys(Keys.ENTER);
+    }
+
+    @Then ("{string} is added")
+    public void task_is_added(String task) {
+        //verify task is added
+        Assert.assertTrue(driver.findElement(By.xpath("//label[text()='"+task+"']")).isDisplayed());
+    }
+
+    @Given ("Tasks are present in the todos")
+    public void tasks_are_present_in_the_todos() throws InterruptedException {
+        i_open_herokuapp_todos_page();
+        i_add_task("TaskOne");
+        i_add_task("TaskTwo");
+        i_add_task("TaskThree");
+    }
+
+    @When("I checkmark the task {int}")
+    public void i_checkmark_the_task(int number){
+        // mark the task as done
+        List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and @class='toggle']"));
+        checkboxes.get(number).click();
+    }
+
+    @Then("Verify Task {int} is marked as done")
+    public void verify_task_is_marked_as_done(int number) throws InterruptedException {
+        // verify task is marked as done
+        List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and @class='toggle']"));
+        Thread.sleep(2000);
+        Assert.assertTrue(checkboxes.get(number).isSelected());
+
+    }
+
+    @Given("Task {int} is present")
+    public void task_is_marked_as_done(int task){
+        // verify task is marked as done
+
+    }
+
+    @When("I delete the task {int}")
+    public void i_delete_the_task(int task){
+        // delete the task
+
+    }
+
+    @Then("The task {int} is not present in the todo list")
+    public void the_task_is_not_present_in_the_list(int task){
+        // verify the task is not present
+
     }
 }
