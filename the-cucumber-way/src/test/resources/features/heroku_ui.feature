@@ -65,6 +65,6 @@ Feature: HerokuApp Login
 
   @future
   Scenario: Delete task
-    Given Task 2 is present
-    When I delete the task 2
-    Then The task 2 is not present in the todo list
+    Given Task 1 is present
+    When I delete the task 1
+    Then The task 1 is not present in the todo list
