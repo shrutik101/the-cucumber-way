@@ -45,7 +45,7 @@ Feature: HerokuApp Login
     When I click on close
     Then The popup is not visible
 
-  @past
+  @todoq
   Scenario Outline: Add task
     Given I open Herokuapp todos page
     When I add "<tasks>"
@@ -63,8 +63,8 @@ Feature: HerokuApp Login
     When I checkmark the task 2
     Then Verify Task 2 is marked as done
 
-  @future
+  @todoq
   Scenario: Delete task
-    Given Task 1 is present
+    Given 3 tasks are present
     When I delete the task 1
-    Then The task 1 is not present in the todo list
+    Then 2 tasks are present in the todo list
