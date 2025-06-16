@@ -1,15 +1,15 @@
 package qa.automation.java.cucumber.stepDefinitions;
 
 import io.cucumber.java.en.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.junit.Assert;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import qa.automation.java.cucumber.hooks.Hooks;
 import qa.automation.java.cucumber.pages.*;
+import utils.PropertyReader;
 
 import java.util.List;
+import java.util.Map;
 
 public class LoginUISteps {
     WebDriver driver = Hooks.getDriver();
@@ -19,6 +19,8 @@ public class LoginUISteps {
     Dropdown dropdown = new Dropdown(driver);
 
     EntryAdd entryAdd = new EntryAdd(driver);
+
+//    private PropertyReader propertyReader = new PropertyReader("src/test/resources/locators.properties");
 
     @Given("I open the HerokuApp login page")
     public void i_open_the_herokuapp_login_page() {
@@ -47,6 +49,7 @@ public class LoginUISteps {
         } else if (expectedResult.equals("Invalid credentials")) {
             Assert.assertTrue("Error message is displayed.", loginPage.isErrorMessageDisplayed());
             System.out.println("Login failed as expected.");
+            Map map;
         }
     }
 
@@ -144,6 +147,7 @@ public class LoginUISteps {
         textBox.sendKeys(task);
         Thread.sleep(2000);
         textBox.sendKeys(Keys.ENTER);
+        Thread.sleep(2000);
     }
 
     @Then ("{string} is added")
@@ -176,21 +180,29 @@ public class LoginUISteps {
 
     }
 
-    @Given("Task {int} is present")
-    public void task_is_marked_as_done(int task){
-        // verify task is marked as done
-
+    @Given("{int} tasks are present")
+    public void task_is_present(int task) throws InterruptedException {
+        // verify task is present
+        tasks_are_present_in_the_todos();
+        List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and @class='toggle']"));
+        Thread.sleep(2000);
+        Assert.assertEquals(checkboxes.size(),task);
     }
 
     @When("I delete the task {int}")
-    public void i_delete_the_task(int task){
+    public void i_delete_the_task(int task) throws InterruptedException {
         // delete the task
-
+        Actions action = new Actions(driver);
+        action.moveToElement(driver.findElement(By.xpath("//label[text()='TaskOne']"))).perform();
+        WebElement delete = driver.findElement(By.xpath("//button[@class='destroy']"));
+        delete.click();
     }
 
-    @Then("The task {int} is not present in the todo list")
-    public void the_task_is_not_present_in_the_list(int task){
+    @Then("{int} tasks are present in the todo list")
+    public void the_task_is_not_present_in_the_list(int task) throws InterruptedException {
         // verify the task is not present
-
+        List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and @class='toggle']"));
+        Thread.sleep(2000);
+        Assert.assertEquals(checkboxes.size(),task);
     }
 }

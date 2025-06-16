@@ -1,16 +1,19 @@
 package qa.automation.java.cucumber.stepDefinitions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Array;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HerokuPractice {
@@ -39,7 +42,10 @@ public class HerokuPractice {
 
 //        practice.downloadFile(driver);
 
-            practice.uploadFile(driver);
+//            practice.uploadFile(driver);
+//            practice.guru99(driver);
+//            practice.getValue(driver);
+            practice.guru99DeleteCustomer(driver);
         } catch (Exception ex){
             ex.printStackTrace();
         } finally {
@@ -47,6 +53,48 @@ public class HerokuPractice {
             driver.quit();
         }
     }
+
+    public void guru99(WebDriver driver) throws IOException {
+        driver.get("https://demo.guru99.com/test/web-table-element.php");
+        String dateAndTime = driver.findElement(By.xpath("//span[contains(text(),'Last updated:')]")).getText();
+        String[] comp = dateAndTime.split(" ");
+        Integer date = Integer.parseInt(comp[2]);
+        String month = comp[3].replace(",","");
+        System.out.println("Date: "+date+"\n"+"Month: "+month);
+        String value = driver.findElement(By.xpath("//table[@class='dataTable']/tbody/tr[7]/td[4]")).getText();
+        System.out.println(value);
+        TakesScreenshot screenshot = (TakesScreenshot)driver;
+        File image = screenshot.getScreenshotAs(OutputType.FILE);
+        File destination = new File("C:\\Users\\admin\\Desktop\\screenshot.png");
+        FileUtils.copyFile(image,destination);
+    }
+
+    public void guru99DeleteCustomer(WebDriver driver) throws InterruptedException {
+        driver.get("https://demo.guru99.com/test/delete_customer.php");
+        driver.findElement(By.xpath("//input[@name='cusid']")).sendKeys("12345");
+        driver.findElement(By.xpath("//input[@name='submit']")).click();
+        driver.switchTo().alert().accept();
+        Thread.sleep(5000);
+        driver.switchTo().alert().accept();
+    }
+
+    public void getValue(WebDriver driver) throws InterruptedException {
+        driver.get("https://demo.guru99.com/test/web-table-element.php");
+        Integer numberOfCompaniesDisplayed = driver.findElements(By.xpath("//table[@class='dataTable']/tbody/tr")).size();
+        for(int i=1; i<=numberOfCompaniesDisplayed; i++){
+            String companyName = driver.findElement(By.xpath("(//a[@href='http://demo.guru99.com/'])["+i+"]")).getText();
+            if("Corporation Bank".equalsIgnoreCase(companyName)){
+                String value = driver.findElement(By.xpath("((//a[@href='http://demo.guru99.com/'])["+i+"]/parent::td/following-sibling::td)[3]")).getText();
+                System.out.println("value for "+companyName+" is: "+value);
+                Thread.sleep(5000);
+            }
+        }
+    }
+
+
+
+
+
 
     public void rightClick(WebDriver driver) {
         driver.get("https://the-internet.herokuapp.com/context_menu");
@@ -144,5 +192,20 @@ public class HerokuPractice {
         driver.findElement(By.xpath("//input[@class='button']")).click();
 
         Thread.sleep(1000);
+    }
+
+    private void dropDown1(WebDriver driver) {
+        driver.get("https://the-internet.herokuapp.com/dropdown");
+
+        WebElement dropDown = driver.findElement(By.cssSelector("#dropdown"));
+        Select select = new Select(dropDown);
+
+        List<WebElement> options = select.getOptions();
+        for(WebElement option: options){
+            if(option.isSelected()){
+                System.out.println(option);
+            }
+        }
+
     }
 }
