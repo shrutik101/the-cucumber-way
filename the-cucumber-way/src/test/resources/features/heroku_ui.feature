@@ -10,7 +10,7 @@ Feature: HerokuApp Login
 
     Examples:
       | username    | password             | expected_result       |
-      | tomsmith    | SuperSecretPassword! | Logout button visible |
+      | topsmith    | SuperSecretPassword! | Logout button visible |
       | invalidUser | invalidPass          | Invalid credentials   |
 
   @checkbox
