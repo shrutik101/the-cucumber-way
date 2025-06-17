@@ -1,5 +1,6 @@
 package qa.automation.java.cucumber.stepDefinitions;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.*;
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import qa.automation.java.cucumber.hooks.Hooks;
 import qa.automation.java.cucumber.pages.*;
 import utils.PropertyReader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,6 @@ public class LoginUISteps {
         } else if (expectedResult.equals("Invalid credentials")) {
             Assert.assertTrue("Error message is displayed.", loginPage.isErrorMessageDisplayed());
             System.out.println("Login failed as expected.");
-            Map map;
         }
     }
 
@@ -190,7 +191,7 @@ public class LoginUISteps {
     }
 
     @When("I delete the task {int}")
-    public void i_delete_the_task(int task) throws InterruptedException {
+    public void i_delete_the_task(int task) {
         // delete the task
         Actions action = new Actions(driver);
         action.moveToElement(driver.findElement(By.xpath("//label[text()='TaskOne']"))).perform();
@@ -204,5 +205,33 @@ public class LoginUISteps {
         List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and @class='toggle']"));
         Thread.sleep(2000);
         Assert.assertEquals(checkboxes.size(),task);
+    }
+
+    @Given("sample setup is done")
+    public void sample_setup_is_done(){
+        System.out.println("sample setup is done");
+    }
+
+    @When("following list data is supplied")
+    public void following_list_data_is_supplied(DataTable dataTable){
+        List<String> names = dataTable.asList(String.class);
+        System.out.println(names);
+    }
+
+    @When("following map data is supplied")
+    public void following_map_data_is_supplied(DataTable dataTable){
+        Map<String, String> map = dataTable.asMap();
+        System.out.println(map);
+    }
+
+    @When("following maps data is supplied")
+    public void following_maps_data_is_supplied(DataTable dataTable){
+        List<Map<String, String>> map = dataTable.asMaps();
+        System.out.println(map);
+    }
+
+    @Then("sample result is verified")
+    public void sample_result_is_verified(){
+        System.out.println("sample result is verified");
     }
 }
