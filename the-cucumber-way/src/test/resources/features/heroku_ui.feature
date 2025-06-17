@@ -68,3 +68,39 @@ Feature: HerokuApp Login
     Given 3 tasks are present
     When I delete the task 1
     Then 2 tasks are present in the todo list
+
+
+  @DTList
+  Scenario: Data Table review
+    Given sample setup is done
+    When following list data is supplied
+      | Names    |
+      | Shruti   |
+      | Shridhar |
+      | Shravani |
+      | Smita    |
+    Then sample result is verified
+
+  @DTMap
+  Scenario: Data Table review
+    Given sample setup is done
+    When following map data is supplied
+      | Name     | Id |
+      | Shruti   | 1  |
+      | Shridhar | 4  |
+      | Shravani | 6  |
+      | Smita    | 32 |
+    Then sample result is verified
+
+  @DT
+  Scenario: Data Table review
+    Given sample setup is done
+    When following maps data is supplied
+      | Name     | Id | email          |
+      | Shruti   | 1  | shruti@gmail   |
+      | Shridhar | 4  | shridhar@gmail |
+      | Shravani | 6  | shravani@gmail |
+      | Smita    | 32 | smita@gmail    |
+    Then sample result is verified
+
+
