@@ -12,7 +12,7 @@ public class Hooks {
 
     @Before
     public void setUp() {
-//        System.setProperty("webdriver.chrome.driver", "F:\\Shruti\\workspace\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+//        System.setProperty("webdriver.chrome.driver", "F:\\Shruti\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         WebDriverManager.chromedriver().setup();
 //        ChromeOptions options = new ChromeOptions();
 //        options.setBinary("F:\\Shruti\\workspace\\Chrome133\\chrome-win64\\");
