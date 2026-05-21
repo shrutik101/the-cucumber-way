@@ -45,6 +45,7 @@ public class Flights {
 //        driver.findElement(By.xpath("//li[@id='flightsOriginLocationSearchResult1']")).click();
 
         driver.findElement(By.id("flightsOriginDestinationbkmgLocationContainer")).click();
+
         driver.findElement(By.id("flightsOriginDestination")).sendKeys(destination);
 
         // Was not needed since send keys selected the destination needed
