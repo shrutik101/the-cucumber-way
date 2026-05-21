@@ -5,9 +5,6 @@ import io.cucumber.java.Before;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-
-import java.io.IOException;
 
 public class Hooks {
 
@@ -29,10 +26,11 @@ public class Hooks {
     }
 
     @After
-    public void tearDown() throws IOException {
+    public void tearDown() {
         if (driver != null) {
             driver.quit();
         }
+
     }
 
     public static WebDriver getDriver() {
