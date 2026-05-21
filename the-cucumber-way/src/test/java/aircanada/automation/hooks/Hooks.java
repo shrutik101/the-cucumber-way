@@ -33,6 +33,7 @@ public class Hooks {
         if (driver != null) {
             driver.quit();
         }
+
     }
 
     public static WebDriver getDriver() {
